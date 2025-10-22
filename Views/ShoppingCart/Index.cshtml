@@ -1,0 +1,83 @@
+﻿@model Smartphone_Store.Models.ShoppingCart
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h1>Shopping Cart</h1>
+
+@if (Model.CartItems.Count == 0)
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartItems)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Product.Price.ToString("C")</td>
+                    <td>@(item.Product.Price * item.Quantity)</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" asp-route-productId="@item.ProductID" method="post">
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h3>Total: @Model.CartItems.Sum(i => i.Product.Price * i.Quantity).ToString("C")</h3>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <button id="checkoutButton" class="btn btn-primary">Checkout</button>
+        
+        <div id="orderForm" style="display:none;">
+            <h2>Order Information</h2>
+            <form asp-action="Checkout" method="post">
+                <div class="form-group">
+                    <label for="FullName">Full Name</label>
+                    <input type="text" class="form-control" id="FullName" name="FullName" required />
+                </div>
+                <div class="form-group">
+                    <label for="Email">E-Mail</label>
+                    <input type="text" class="form-control" id="Email" name="Email" required />
+                </div>
+                <div class="form-group">
+                    <label for="PhoneNumber">Phone number</label>
+                    <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" required />
+                </div>
+                <div class="form-group">
+                    <label for="Address">Address</label>
+                    <input type="text" class="form-control" id="Address" name="Address" required />
+                </div>
+                <div class="form-group">
+                    <label for="City">City</label>
+                    <input type="text" class="form-control" id="City" name="City" required />
+                </div>
+                <div class="form-group">
+                    <label for="PostalCode">Postal Code</label>
+                    <input type="text" class="form-control" id="PostalCode" name="PostalCode" required />
+                </div>
+                <button type="submit" class="btn btn-success">Proceed to Payment</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <p>Please <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Index", "ShoppingCart")" asp-route-fromCheckout="true">login</a> to checkout.</p>
+    }
+}

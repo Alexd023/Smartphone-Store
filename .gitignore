@@ -1,0 +1,16 @@
+﻿# Ignoră fișiere temporare Visual Studio și .NET
+.vs/
+**/bin/
+**/obj/
+TestResults/
+*.user
+*.suo
+
+# Ignoră fișierele SonarQube
+.sonarqube/
+.scannerwork/
+
+# Fișiere temporare și loguri
+*.vsidx
+*.log
+*.tmp

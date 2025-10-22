@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Admin Dashboard</h2>
+
+<div class="list-group">
+    <a href="@Url.Action("RolesIndex", "Admin")" class="list-group-item list-group-item-action">Role Management</a>
+    <a href="@Url.Action("OrderManagement", "Admin")" class="list-group-item list-group-item-action">Order Management</a>
+    <a href="@Url.Action("ProductManagement", "Admin")" class="list-group-item list-group-item-action">Product Management</a>
+</div>

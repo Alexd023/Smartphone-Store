@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Smartphone_Store.Models.Order>
+
+<h2>Order Management</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Details</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.UserName</td>
+                <td>@order.OrderDate.ToString("g")</td>
+                <td>@order.TotalAmount.ToString("C")</td>
+                <td>
+                    <a asp-action="ViewOrder" asp-route-OrderId="@order.OrderId" class="btn btn-primary">View</a>
+                </td>
+                <td>
+                    <form asp-action="DeleteOrder" method="post" onsubmit="return confirmDelete()">
+                        <input type="hidden" name="orderId" value="@order.OrderId" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

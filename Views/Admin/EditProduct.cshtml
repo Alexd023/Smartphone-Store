@@ -1,0 +1,153 @@
+﻿@model Smartphone_Store.Models.Product
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="EditProduct" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Brand" class="form-label"></label>
+        <input asp-for="Brand" class="form-control" />
+        <span asp-validation-for="Brand" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ModelName" class="form-label"></label>
+        <input asp-for="ModelName" class="form-control" />
+        <span asp-validation-for="ModelName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Stock" class="form-label"></label>
+        <input asp-for="Stock" class="form-control" />
+        <span asp-validation-for="Stock" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SimType" class="form-label"></label>
+        <input asp-for="SimType" class="form-control" />
+        <span asp-validation-for="SimType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RAMSize" class="form-label"></label>
+        <input asp-for="RAMSize" class="form-control" />
+        <span asp-validation-for="RAMSize" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ROMSize" class="form-label"></label>
+        <input asp-for="ROMSize" class="form-control" />
+        <span asp-validation-for="ROMSize" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MicroSDsupport" class="form-label"></label>
+        <input asp-for="MicroSDsupport" class="form-check-input" type="checkbox" />
+        <span asp-validation-for="MicroSDsupport" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProcessorType" class="form-label"></label>
+        <input asp-for="ProcessorType" class="form-control" />
+        <span asp-validation-for="ProcessorType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="OperatingSystem" class="form-label"></label>
+        <input asp-for="OperatingSystem" class="form-control" />
+        <span asp-validation-for="OperatingSystem" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DisplayType" class="form-label"></label>
+        <input asp-for="DisplayType" class="form-control" />
+        <span asp-validation-for="DisplayType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DisplayResolution" class="form-label"></label>
+        <input asp-for="DisplayResolution" class="form-control" />
+        <span asp-validation-for="DisplayResolution" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BluetoothType" class="form-label"></label>
+        <input asp-for="BluetoothType" class="form-control" />
+        <span asp-validation-for="BluetoothType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="WiFiType" class="form-label"></label>
+        <input asp-for="WiFiType" class="form-control" />
+        <span asp-validation-for="WiFiType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NFCsupport" class="form-label"></label>
+        <input asp-for="NFCsupport" class="form-check-input" type="checkbox" />
+        <span asp-validation-for="NFCsupport" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BatterySpecs" class="form-label"></label>
+        <input asp-for="BatterySpecs" class="form-control" />
+        <span asp-validation-for="BatterySpecs" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BackCameraSpecs" class="form-label"></label>
+        <input asp-for="BackCameraSpecs" class="form-control" />
+        <span asp-validation-for="BackCameraSpecs" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FrontCameraSpecs" class="form-label"></label>
+        <input asp-for="FrontCameraSpecs" class="form-control" />
+        <span asp-validation-for="FrontCameraSpecs" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Dimensions" class="form-label"></label>
+        <input asp-for="Dimensions" class="form-control" />
+        <span asp-validation-for="Dimensions" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ExtraDetails" class="form-label"></label>
+        <textarea asp-for="ExtraDetails" class="form-control"></textarea>
+        <span asp-validation-for="ExtraDetails" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Upload Images</label>
+        <input type="file" name="Images" multiple class="form-control" />
+    </div>
+    <input type="hidden" name="ProductID" id="ProductID" value="@Model.ProductID" />
+    <div class="form-group">
+        <h4>Current Images</h4>
+        <div id="current-images">
+            @foreach (var image in Model.Images)
+            {
+                <div class="image-wrapper" id="image-@image.Id">
+                    <img src="@Url.Content("~/" + image.FilePath)" alt="Product Image" width="100" height="100" />
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeImage(@image.Id)">Delete</button>
+                    <input type="hidden" name="ExistingImageIds" value="@image.Id" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Edit" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function removeImage(imageId) {
+            document.getElementById("image-" + imageId).remove();
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

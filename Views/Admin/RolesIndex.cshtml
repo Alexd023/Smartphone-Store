@@ -1,0 +1,30 @@
+﻿@model List<Smartphone_Store.ViewModels.ManageUserRolesViewModel>
+
+<h2>User Roles</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    @foreach (var role in user.Roles)
+                    {
+                        <span class="badge bg-primary">@role.RoleName</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="ManageUserRoles" asp-route-userId="@user.UserId" class="btn btn-success">Manage Roles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

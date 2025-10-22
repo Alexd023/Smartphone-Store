@@ -1,0 +1,41 @@
+﻿@model Smartphone_Store.Models.Order
+
+<h2>Order Details</h2>
+
+<p><strong>Order ID:</strong> @Model.OrderId</p>
+<p><strong>User ID:</strong> @Model.UserId</p>
+<p><strong>User Name:</strong> @Model.UserName</p>
+<p><strong>Full Name:</strong> @Model.FullName</p>
+<p><strong>Address:</strong> @Model.Address</p>
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+<p><strong>City:</strong> @Model.City</p>
+<p><strong>Postal Code:</strong> @Model.PostalCode</p>
+<p><strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
+<p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
+
+<h4>Order Items</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.OrderItems != null)
+        {
+            foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@(item.Price * item.Quantity)</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

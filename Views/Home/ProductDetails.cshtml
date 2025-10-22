@@ -1,0 +1,145 @@
+﻿@model Smartphone_Store.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="product-images">
+                <div class="main-image-container">
+                    <img src="@Url.Content($"~/{Model.Images.FirstOrDefault()?.FilePath}")" class="img-fluid main-image" alt="@Model.Name" id="mainImage">
+                </div>
+                <div class="thumbnail-images mt-3">
+                    <div class="row">
+                        @foreach (var image in Model.Images)
+                        {
+                            <div class="col-2">
+                                <img src="@Url.Content($"~/{image.FilePath}")" alt="@Model.Name" class="img-fluid thumbnail-img" data-src="@Url.Content($"~/{image.FilePath}")" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mt-5">
+            <h1 class="product-title">@Model.Name</h1>
+            <div class="product-meta">
+                <span class="product-brand">@Model.Brand</span> |
+                <span class="product-model">@Model.ModelName</span>
+            </div>
+            <div class="product-price mt-2">
+                <h2>@Model.Price</h2>
+            </div>
+            <div class="product-stock mt-2">
+                @if (Model.Stock > 5)
+                {
+                    <span class="text-success">In stock</span>
+                }
+                else if (Model.Stock > 0 && Model.Stock <= 5)
+                {
+                    <span class="text-warning">Limited stock</span>
+                }
+                else
+                {
+                    <span class="text-danger">Out of stock</span>
+                }
+            </div>
+            <div class="product-description mt-4">
+                <h4>Description</h4>
+                <p>@Model.Description</p>
+            </div>
+            <div class="product-actions mt-4">
+                <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                    <input type="hidden" name="productId" value="@Model.ProductID" />
+                    <div class="input-group mb-3">
+                        <input type="number" name="quantity" class="form-control" value="1" min="1" max="@Model.Stock" />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-lg-12">
+            <h4>Specifications</h4>
+            <table class="table table-striped">
+                <tr>
+                    <th>Brand</th>
+                    <td>@Model.Brand</td>
+                </tr>
+                <tr>
+                    <th>Model</th>
+                    <td>@Model.ModelName</td>
+                </tr>
+                <tr>
+                    <th>Sim Type</th>
+                    <td>@Model.SimType</td>
+                </tr>
+                <tr>
+                    <th>RAM Size</th>
+                    <td>@Model.RAMSize</td>
+                </tr>
+                <tr>
+                    <th>ROM Size</th>
+                    <td>@Model.ROMSize</td>
+                </tr>
+                <tr>
+                    <th>MicroSD Support</th>
+                    <td>@Model.MicroSDsupport</td>
+                </tr>
+                <tr>
+                    <th>Processor Type</th>
+                    <td>@Model.ProcessorType</td>
+                </tr>
+                <tr>
+                    <th>Operating System</th>
+                    <td>@Model.OperatingSystem</td>
+                </tr>
+                <tr>
+                    <th>Display Type</th>
+                    <td>@Model.DisplayType</td>
+                </tr>
+                <tr>
+                    <th>Display Resolution</th>
+                    <td>@Model.DisplayResolution</td>
+                </tr>
+                <tr>
+                    <th>Bluetooth Type</th>
+                    <td>@Model.BluetoothType</td>
+                </tr>
+                <tr>
+                    <th>WiFi Type</th>
+                    <td>@Model.WiFiType</td>
+                </tr>
+                <tr>
+                    <th>NFC Support</th>
+                    <td>@Model.NFCsupport</td>
+                </tr>
+                <tr>
+                    <th>Battery Specs</th>
+                    <td>@Model.BatterySpecs</td>
+                </tr>
+                <tr>
+                    <th>Back Camera Specs</th>
+                    <td>@Model.BackCameraSpecs</td>
+                </tr>
+                <tr>
+                    <th>Front Camera Specs</th>
+                    <td>@Model.FrontCameraSpecs</td>
+                </tr>
+                <tr>
+                    <th>Dimensions</th>
+                    <td>@Model.Dimensions</td>
+                </tr>
+                <tr>
+                    <th>Extra Details</th>
+                    <td>@Model.ExtraDetails</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

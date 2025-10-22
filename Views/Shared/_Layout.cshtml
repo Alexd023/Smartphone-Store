@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Licenta</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<!--<link rel="stylesheet" href="~/Licenta.styles.css" asp-append-version="true" />-->
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand mb-0 h1" asp-action="Index" asp-controller="Home">Home</a>
+            <button type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" class="navbar-toggler" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link active" asp-action="Index" asp-controller="Home" asp-route-query="Apple">Apple</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link active" asp-action="Index" asp-controller="Home" asp-route-query="Samsung">Samsung</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link active" asp-action="Index" asp-controller="Home" asp-route-query="Huawei">Huawei</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link active" asp-action="Index" asp-controller="Home" asp-route-query="Xiaomi">Xiaomi</a>
+                    </li>
+                </ul>
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+    </header>
+    <div class="container mt-lg-5">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - Licenta - Diaconu Alexandru Catalin
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,18 @@
+﻿@model Smartphone_Store.ViewModels.ManageUserRolesViewModel
+
+<h2>Manage Roles for @Model.Email</h2>
+
+<form asp-action="ManageUserRoles" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div>
+        @for (var i = 0; i < Model.Roles.Count; i++)
+        {
+            <div>
+                <input type="checkbox" asp-for="Roles[i].IsSelected" />
+                <input type="hidden" asp-for="Roles[i].RoleName" />
+                <label asp-for="Roles[i].IsSelected">@Model.Roles[i].RoleName</label>
+            </div>
+        }
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+</form>

@@ -1,0 +1,121 @@
+﻿@model Smartphone_Store.Models.SearchResultsViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<header>
+    <div id="bannerimage"></div>
+</header>
+
+<body>
+    <div class="search-banner">
+        <div class="product-count">(@Model.Products.Count() Produse)</div>
+        <div class="sort-container">
+            <span>Ordoneaza dupa:</span>
+            <form method="get" id="sortForm" class="d-inline">
+                <select name="sortOrder" id="sortOrder" data-sort-order="@Model.SortOrder" onchange="document.getElementById('sortForm').submit();" class="form-select">
+                    <option value="null">Default</option>
+                    <option value="priceAsc">Pret crescator</option>
+                    <option value="priceDesc">Pret descrescator</option>
+                </select>
+                <input type="hidden" name="query" value="@Model.SearchQuery" />
+                @foreach (var brand in Model.SelectedBrands)
+                {
+                    <input type="hidden" name="brand" value="@brand" />
+                }
+                <input type="hidden" id="isUserSpecifiedMinPrice" name="isUserSpecifiedMinPrice" value="@Model.IsUserSpecifiedMinPrice.ToString()" />
+                <input type="hidden" id="isUserSpecifiedMaxPrice" name="isUserSpecifiedMaxPrice" value="@Model.IsUserSpecifiedMaxPrice.ToString()" />
+                <input type="hidden" name="minPrice" value="@Model.MinPrice" />
+                <input type="hidden" name="maxPrice" value="@Model.MaxPrice" />
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <form method="get" id="filterForm">
+                <h4>Brand</h4>
+                <div class="form-check">
+                    @if (Model.Brands != null)
+                    {
+                        @foreach (var brand in Model.Brands)
+                        {
+                            <input class="form-check-input" type="checkbox" name="brand" value="@brand" id="brand-@brand" @(Model.SelectedBrands.Contains(brand) ? "checked" : "") onchange="document.getElementById('filterForm').submit();" />
+                            <label class="form-check-label" for="brand-@brand">@brand</label>
+                            <br />
+                        }
+                    }
+                </div>
+
+                <h4>Price (Lei)</h4>
+                <div class="form-group">
+                    <label for="minPrice">Min</label>
+                    <input type="number" class="form-control" id="minPrice" name="minPrice" value="@Model.MinPrice" placeholder="Pret minim" />
+                    <input type="hidden" id="isUserSpecifiedMinPrice" name="isUserSpecifiedMinPrice" value="@Model.IsUserSpecifiedMinPrice.ToString()" />
+                </div>
+                <div class="form-group">
+                    <label for="maxPrice">Max</label>
+                    <input type="number" class="form-control" id="maxPrice" name="maxPrice" value="@Model.MaxPrice" placeholder="Pret maxim" />
+                    <input type="hidden" id="isUserSpecifiedMaxPrice" name="isUserSpecifiedMaxPrice" value="@Model.IsUserSpecifiedMaxPrice.ToString()" />
+                </div>
+                <input type="hidden" id="sortOder" name="sortOrder" value="@Model.SortOrder" />
+                <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Reset</a>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="get" id="searchForm" class="d-flex mb-4">
+                        <input type="text" name="query" class="form-control me-2" placeholder="Search..." value="@Model.SearchQuery" />
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                </div>
+                @if (!Model.Products.Any())
+                {
+                    <p>No products available.</p>
+                }
+                else
+                {
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="col-md-4">
+                            <a href="@Url.Action("ProductDetails", "Home", new {id = product.ProductID})" class="product-card-link">
+                                <div class="card mb-4">
+                                    <img src="@Url.Content("~/" + product.Images.FirstOrDefault()?.FilePath)" class="card-img-top" alt="@product.Name">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@product.Name</h5>
+                                        <p class="card-text">@product.Brand</p>
+                                        <p class="card-text">@product.ModelName</p>
+                                        <p class="card-text">@product.Price</p>
+                                        <p class="card-text">
+                                            @if (product.Stock > 5)
+                                            {
+                                                <span class="text-success">In stock</span>
+                                            }
+                                            else if (product.Stock > 0 && product.Stock <= 5)
+                                            {
+                                                <span class="text-warning">Limited stock</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">Out of stock</span>
+                                            }
+                                        <p class="card-text">
+                                            <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                                                <input type="hidden" name="productId" value="@product.ProductID" />
+                                                <input type="number" name="quantity" value="1" min="1" max="@product.Stock" />
+                                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                            </form>
+                                        </p>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</body>
