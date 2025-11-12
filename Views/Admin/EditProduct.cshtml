@@ -129,7 +129,7 @@
             @foreach (var image in Model.Images)
             {
                 <div class="image-wrapper" id="image-@image.Id">
-                    <img src="@Url.Content("~/" + image.FilePath)" alt="Product Image" width="100" height="100" />
+                    <img src="@Url.Content("~/" + image.FilePath)" alt="Product" width="100" height="100" />
                     <button type="button" class="btn btn-danger btn-sm" onclick="removeImage(@image.Id)">Delete</button>
                     <input type="hidden" name="ExistingImageIds" value="@image.Id" />
                 </div>

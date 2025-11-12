@@ -1,3 +1,9 @@
+
+
+namespace Smartphone_Store.Services
+{
+using Smartphone_Store.Repositories.Interfaces;
+
 ﻿using Microsoft.AspNetCore.Identity;
 using Smartphone_Store.Models;
 using Smartphone_Store.Services.Interfaces;
@@ -47,7 +53,7 @@ public class AdminService : IAdminService
         return userRolesViewModel;
     }
 
-    public async Task<ManageUserRolesViewModel> GetUserRoleAsync(string userId)
+    public async Task<ManageUserRolesViewModel?> GetUserRoleAsync(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
 
@@ -106,4 +112,5 @@ public class AdminService : IAdminService
     {
         await _adminRepository.DeleteOrderAsync(orderId);
     }
+}
 }

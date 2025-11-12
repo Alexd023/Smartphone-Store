@@ -102,4 +102,4 @@ app.MapRazorPages();
 
 app.UseSession();
 
-app.Run();
+await app.RunAsync();

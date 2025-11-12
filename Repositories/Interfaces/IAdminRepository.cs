@@ -1,3 +1,7 @@
+
+
+namespace Smartphone_Store.Repositories.Interfaces
+{
 ﻿using Microsoft.AspNetCore.Identity;
 using Smartphone_Store.Models;
 using System.Collections.Generic;
@@ -10,4 +14,5 @@ public interface IAdminRepository
     Task<List<Order>> GetAllOrdersAsync();
     Task<Order> GetOrderByIdAsync(int id);
     Task DeleteOrderAsync(int orderId);
+}
 }

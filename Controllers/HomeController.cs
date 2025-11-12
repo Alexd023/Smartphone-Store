@@ -44,6 +44,10 @@ namespace Smartphone_Store.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddProduct(Product model, IFormFile[] images)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("/Views/Admin/AddProduct.cshtml", model);
+            }
             if (await _productService.AddProductAsync(model, images, ModelState))
             {
                 return RedirectToAction(nameof(Index));

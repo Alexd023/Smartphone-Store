@@ -1,3 +1,7 @@
+
+
+namespace Smartphone_Store.Controllers
+{
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Smartphone_Store.Services.Interfaces;
@@ -17,7 +21,7 @@ public class AdminController : Controller
         _productService = productService;
     }
 
-    public async Task<IActionResult> Dashboard()
+    public IActionResult Dashboard()
     {
         return View();
     }
@@ -83,7 +87,8 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> EditProduct(int id, Product product, IFormFileCollection images, int[] ExistingImageIds)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid) { return View(product); }
+            if (ModelState.IsValid)
         {
             var result = await _productService.UpdateProductAsync(product, images, ModelState, ExistingImageIds);
             if (result)
@@ -101,4 +106,5 @@ public class AdminController : Controller
         await _productService.DeleteProductAsync(id);
         return RedirectToAction("ProductManagement");
     }
+}
 }
