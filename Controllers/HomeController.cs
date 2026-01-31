@@ -56,6 +56,7 @@ namespace Smartphone_Store.Controllers
 			return View("/Views/Admin/AddProduct.cshtml");
 		}
 
+<<<<<<< HEAD
 		[HttpPost]
 		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> AddProduct(Product model, IFormFile[] images)
@@ -64,6 +65,20 @@ namespace Smartphone_Store.Controllers
 			{
 				return RedirectToAction(nameof(Index));
 			}
+=======
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddProduct(Product model, IFormFile[] images)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("/Views/Admin/AddProduct.cshtml", model);
+            }
+            if (await _productService.AddProductAsync(model, images, ModelState))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+>>>>>>> 1d8b573a0d14eeffa3a1a8bf587e1a2383422ffe
 
 			return View("/Views/Admin/AddProduct.cshtml", model);
 		}

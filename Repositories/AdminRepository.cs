@@ -1,3 +1,9 @@
+
+
+namespace Smartphone_Store.Repositories
+{
+using Smartphone_Store.Repositories.Interfaces;
+
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Smartphone_Store.Models;
@@ -44,4 +50,5 @@ public class AdminRepository : IAdminRepository
             await _context.SaveChangesAsync();
         }
     }
+}
 }

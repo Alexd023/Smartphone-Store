@@ -17,9 +17,11 @@ namespace Smartphone_Store.Models
         [StringLength(50)]
         public string ModelName { get; set; }
 
+        [Required]
         [Range(0, 10000)]
         public decimal Price { get; set; }
 
+        [Required]
         [Range(0, int.MaxValue)]
         public int Stock { get; set; }
 
