@@ -1,22 +1,24 @@
-﻿@model Smartphone_Store.Models.Product
+﻿@model Smartphone_Store.Models.ProductDetailsVm
 
 @{
     ViewData["Title"] = "Product Details";
+    var p = Model.Product;
 }
+
 
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-8">
             <div class="product-images">
                 <div class="main-image-container">
-                    <img src="@Url.Content($"~/{Model.Images.FirstOrDefault()?.FilePath}")" class="img-fluid main-image" alt="@Model.Name" id="mainImage">
+                    <img src="@Url.Content($"~/{p.Images.FirstOrDefault()?.FilePath}")" class="img-fluid main-image" alt="@p.Name" id="mainImage">
                 </div>
                 <div class="thumbnail-images mt-3">
                     <div class="row">
-                        @foreach (var image in Model.Images)
+                        @foreach (var image in p.Images)
                         {
                             <div class="col-2">
-                                <img src="@Url.Content($"~/{image.FilePath}")" alt="@Model.Name" class="img-fluid thumbnail-img" data-src="@Url.Content($"~/{image.FilePath}")" />
+                                <img src="@Url.Content($"~/{image.FilePath}")" alt="@p.Name" class="img-fluid thumbnail-img" data-src="@Url.Content($"~/{image.FilePath}")" />
                             </div>
                         }
                     </div>
@@ -24,20 +26,20 @@
             </div>
         </div>
         <div class="col-lg-4 mt-5">
-            <h1 class="product-title">@Model.Name</h1>
+            <h1 class="product-title">@p.Name</h1>
             <div class="product-meta">
-                <span class="product-brand">@Model.Brand</span> |
-                <span class="product-model">@Model.ModelName</span>
+                <span class="product-brand">@p.Brand</span> |
+                <span class="product-model">@p.ModelName</span>
             </div>
             <div class="product-price mt-2">
-                <h2>@Model.Price</h2>
+                <h2>@p.Price</h2>
             </div>
             <div class="product-stock mt-2">
-                @if (Model.Stock > 5)
+                @if (p.Stock > 5)
                 {
                     <span class="text-success">In stock</span>
                 }
-                else if (Model.Stock > 0 && Model.Stock <= 5)
+                else if (p.Stock > 0 && p.Stock <= 5)
                 {
                     <span class="text-warning">Limited stock</span>
                 }
@@ -48,20 +50,36 @@
             </div>
             <div class="product-description mt-4">
                 <h4>Description</h4>
-                <p>@Model.Description</p>
+                <p>@p.Description</p>
             </div>
             <div class="product-actions mt-4">
                 <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
-                    <input type="hidden" name="productId" value="@Model.ProductID" />
+                    <input type="hidden" name="productId" value="@p.ProductID" />
                     <div class="input-group mb-3">
-                        <input type="number" name="quantity" class="form-control" value="1" min="1" max="@Model.Stock" />
+                        <input type="number" name="quantity" class="form-control" value="1" min="1" max="@p.Stock" />
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-primary">Add to Cart</button>
                         </div>
                     </div>
                 </form>
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <form asp-controller="Wishlist" asp-action="Add" method="post">
+                        <input type="hidden" name="productId" value="@p.ProductID" />
+                        <button class="btn btn-outline-danger">❤️ Add to Wishlist</button>
+                    </form>
+
+                    <a asp-controller="Wishlist" asp-action="Index" class="btn btn-link">View Wishlist</a>
+                }
             </div>
         </div>
+        <form asp-controller="Compare" asp-action="Add" method="post">
+            <input type="hidden" name="productId" value="@p.ProductID" />
+            <button class="btn btn-outline-primary">Compare</button>
+        </form>
+
+        <a asp-controller="Compare" asp-action="Index" class="btn btn-link">Go to Compare</a>
+
     </div>
     <div class="row mt-5">
         <div class="col-lg-12">
@@ -69,77 +87,136 @@
             <table class="table table-striped">
                 <tr>
                     <th>Brand</th>
-                    <td>@Model.Brand</td>
+                    <td>@p.Brand</td>
                 </tr>
                 <tr>
                     <th>Model</th>
-                    <td>@Model.ModelName</td>
+                    <td>@p.ModelName</td>
                 </tr>
                 <tr>
                     <th>Sim Type</th>
-                    <td>@Model.SimType</td>
+                    <td>@p.SimType</td>
                 </tr>
                 <tr>
                     <th>RAM Size</th>
-                    <td>@Model.RAMSize</td>
+                    <td>@p.RAMSize</td>
                 </tr>
                 <tr>
                     <th>ROM Size</th>
-                    <td>@Model.ROMSize</td>
+                    <td>@p.ROMSize</td>
                 </tr>
                 <tr>
                     <th>MicroSD Support</th>
-                    <td>@Model.MicroSDsupport</td>
+                    <td>@p.MicroSDsupport</td>
                 </tr>
                 <tr>
                     <th>Processor Type</th>
-                    <td>@Model.ProcessorType</td>
+                    <td>@p.ProcessorType</td>
                 </tr>
                 <tr>
                     <th>Operating System</th>
-                    <td>@Model.OperatingSystem</td>
+                    <td>@p.OperatingSystem</td>
                 </tr>
                 <tr>
                     <th>Display Type</th>
-                    <td>@Model.DisplayType</td>
+                    <td>@p.DisplayType</td>
                 </tr>
                 <tr>
                     <th>Display Resolution</th>
-                    <td>@Model.DisplayResolution</td>
+                    <td>@p.DisplayResolution</td>
                 </tr>
                 <tr>
                     <th>Bluetooth Type</th>
-                    <td>@Model.BluetoothType</td>
+                    <td>@p.BluetoothType</td>
                 </tr>
                 <tr>
                     <th>WiFi Type</th>
-                    <td>@Model.WiFiType</td>
+                    <td>@p.WiFiType</td>
                 </tr>
                 <tr>
                     <th>NFC Support</th>
-                    <td>@Model.NFCsupport</td>
+                    <td>@p.NFCsupport</td>
                 </tr>
                 <tr>
                     <th>Battery Specs</th>
-                    <td>@Model.BatterySpecs</td>
+                    <td>@p.BatterySpecs</td>
                 </tr>
                 <tr>
                     <th>Back Camera Specs</th>
-                    <td>@Model.BackCameraSpecs</td>
+                    <td>@p.BackCameraSpecs</td>
                 </tr>
                 <tr>
                     <th>Front Camera Specs</th>
-                    <td>@Model.FrontCameraSpecs</td>
+                    <td>@p.FrontCameraSpecs</td>
                 </tr>
                 <tr>
                     <th>Dimensions</th>
-                    <td>@Model.Dimensions</td>
+                    <td>@p.Dimensions</td>
                 </tr>
                 <tr>
                     <th>Extra Details</th>
-                    <td>@Model.ExtraDetails</td>
+                    <td>@p.ExtraDetails</td>
                 </tr>
             </table>
         </div>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-lg-12">
+        <h4>Reviews (Avg: @Model.AverageRating.ToString("0.0") / 5)</h4>
+
+        @if (!Model.Reviews.Any())
+        {
+            <p>No reviews yet.</p>
+        }
+        else
+        {
+            <ul>
+                @foreach (var r in Model.Reviews)
+                {
+                    <li class="mb-2">
+                        <strong>@r.Rating/5</strong> - @r.Comment
+                        <small class="text-muted">(@r.CreatedAt)</small>
+
+                        @if (!string.IsNullOrEmpty(Model.CurrentUserId) && r.UserId == Model.CurrentUserId)
+                        {
+                            <form asp-controller="Reviews" asp-action="Delete" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@r.Id" />
+                                <input type="hidden" name="productId" value="@p.ProductID" />
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <h5 class="mt-4">Leave a review</h5>
+
+            <form asp-controller="Reviews" asp-action="Create" method="post">
+                <input type="hidden" asp-for="NewReview.ProductId" />
+
+                <div class="mb-2">
+                    <label asp-for="NewReview.Rating"></label>
+                    <select asp-for="NewReview.Rating" class="form-select">
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+
+                <div class="mb-2">
+                    <label asp-for="NewReview.Comment"></label>
+                    <textarea asp-for="NewReview.Comment" class="form-control" maxlength="500"></textarea>
+                    <span asp-validation-for="NewReview.Comment" class="text-danger"></span>
+                </div>
+
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        }
     </div>
 </div>

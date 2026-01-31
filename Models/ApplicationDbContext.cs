@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace Smartphone_Store.Models
 {
@@ -13,8 +14,12 @@ namespace Smartphone_Store.Models
         public DbSet<Image> Images { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+		public DbSet<WishlistItem> WishlistItems { get; set; }
+		public DbSet<Review> Reviews { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -60,6 +65,9 @@ namespace Smartphone_Store.Models
                 .WithMany()
                 .HasForeignKey(oi => oi.ProductID)
                 .IsRequired();
-        }
-    }
+			modelBuilder.Entity<WishlistItem>()
+	            .HasIndex(w => new { w.UserId, w.ProductId })
+	            .IsUnique();
+		}
+	}
 }

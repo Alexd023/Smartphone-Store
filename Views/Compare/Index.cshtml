@@ -1,0 +1,120 @@
+﻿@model List<Smartphone_Store.Models.Product>
+
+@{
+    ViewData["Title"] = "Compare Products";
+}
+
+<h1>Compare Products</h1>
+
+@if (!Model.Any())
+{
+    <p>No products selected for comparison.</p>
+    <p>Add up to 3 products using the Compare button.</p>
+}
+else
+{
+    <form asp-action="Clear" method="post" class="mb-3">
+        <button class="btn btn-outline-danger">Clear</button>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Feature</th>
+                @foreach (var p in Model)
+                {
+                    <th>
+                        @p.Name
+                        <form asp-action="Remove" method="post" style="display:inline;">
+                            <input type="hidden" name="productId" value="@p.ProductID" />
+                            <button class="btn btn-sm btn-outline-secondary ms-2">Remove</button>
+                        </form>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Brand</td>@foreach (var p in Model) {
+            <td>@p.Brand</td>
+        }
+</tr>
+        <tr><td>Model</td>@foreach (var p in Model) {
+        <td>@p.ModelName</td>
+                }
+</tr>
+        <tr><td>Price</td>@foreach (var p in Model) {
+        <td>@p.Price.ToString("C")</td>
+                }
+</tr>
+        <tr><td>Stock</td>@foreach (var p in Model) {
+        <td>@p.Stock</td>
+                }
+</tr>
+
+        <tr><td>SIM</td>@foreach (var p in Model) {
+        <td>@p.SimType</td>
+                }
+</tr>
+        <tr><td>RAM</td>@foreach (var p in Model) {
+        <td>@p.RAMSize GB</td>
+                }
+</tr>
+        <tr><td>ROM</td>@foreach (var p in Model) {
+        <td>@p.ROMSize GB</td>
+                }
+</tr>
+        <tr><td>MicroSD</td>@foreach (var p in Model) {
+        <td>@(p.MicroSDsupport ? "Yes" : "No")</td>
+                }
+</tr>
+
+        <tr><td>CPU</td>@foreach (var p in Model) {
+        <td>@p.ProcessorType</td>
+                }
+</tr>
+        <tr><td>OS</td>@foreach (var p in Model) {
+        <td>@p.OperatingSystem</td>
+                }
+</tr>
+
+        <tr><td>Display</td>@foreach (var p in Model) {
+        <td>@p.DisplayType</td>
+                }
+</tr>
+        <tr><td>Resolution</td>@foreach (var p in Model) {
+        <td>@p.DisplayResolution</td>
+                }
+</tr>
+
+        <tr><td>Bluetooth</td>@foreach (var p in Model) {
+        <td>@p.BluetoothType</td>
+                }
+</tr>
+        <tr><td>Wi-Fi</td>@foreach (var p in Model) {
+        <td>@p.WiFiType</td>
+                }
+</tr>
+        <tr><td>NFC</td>@foreach (var p in Model) {
+        <td>@(p.NFCsupport ? "Yes" : "No")</td>
+                }
+</tr>
+
+        <tr><td>Battery</td>@foreach (var p in Model) {
+        <td>@p.BatterySpecs</td>
+                }
+</tr>
+        <tr><td>Back Camera</td>@foreach (var p in Model) {
+        <td>@p.BackCameraSpecs</td>
+                }
+</tr>
+        <tr><td>Front Camera</td>@foreach (var p in Model) {
+        <td>@p.FrontCameraSpecs</td>
+                }
+</tr>
+        <tr><td>Dimensions</td>@foreach (var p in Model) {
+        <td>@p.Dimensions</td>
+                }
+</tr>
+    </tbody>
+</table>
+}

@@ -175,36 +175,24 @@ namespace Smartphone_Store.Services
 
             var productList = cart.CartItems;
 
-            var domain = "https://localhost:7233/";
-
+            var http = _httpContextAccessor.HttpContext;
+            var domain = http != null ? $"{http.Request.Scheme}://{http.Request.Host}" : string.Empty;
             var options = new SessionCreateOptions
             {
-                SuccessUrl = domain + $"ShoppingCart/OrderConfirmation",
-                CancelUrl = domain + $"ShoppingCart/OrderFailure",
-                LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
+                SuccessUrl = string.IsNullOrEmpty(domain) ? "https://example.com/success" : domain + "/Cart/Success",
+                CancelUrl  = string.IsNullOrEmpty(domain) ? "https://example.com/cancel"  : domain + "/Cart/Cancel",
+                LineItems = new List<SessionLineItemOptions>()
             };
 
-            foreach (var item in productList)
-            {
-                var sessionListItem = new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmount = (long)(item.Product.Price * item.Quantity * 100),
-                        Currency = "ron",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = item.Product.Name.ToString(),
-                        }
-                    },
-                    Quantity = item.Quantity
-                };
-                options.LineItems.Add(sessionListItem);
-            }
 
-            var service = new SessionService();
-            Session session = service.Create(options);
+            var lineItems = BuildLineItems(productList);
+            foreach (var li in lineItems)
+            {
+                options.LineItems.Add(li);
+            }
+var session = TryCreateStripeSession(options);
+            if (session == null) return (string.Empty, JsonConvert.SerializeObject(userAddress));
 
             var serializedUserAddress = JsonConvert.SerializeObject(userAddress);
 
@@ -244,6 +232,44 @@ namespace Smartphone_Store.Services
         {
             var appUser = await GetUserAsync(user);
             return await _orderRepository.GetOrdersByUserIdAsync(appUser.Id);
+        }
+        
+        private List<SessionLineItemOptions> BuildLineItems(IEnumerable<CartItem> items)
+        {
+            var list = new List<SessionLineItemOptions>();
+            foreach (var item in items)
+            {
+                if (item?.Product == null) continue;
+                var line = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)(item.Product.Price * 100),
+                        Currency = "eur",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.Product.Name?.ToString() ?? string.Empty
+                        }
+                    },
+                    Quantity = item.Quantity
+                };
+                list.Add(line);
+            }
+            return list;
+        }
+
+        private Session? TryCreateStripeSession(SessionCreateOptions options)
+        {
+            try
+            {
+                var service = new SessionService();
+                return service.Create(options);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
         }
     }
 }

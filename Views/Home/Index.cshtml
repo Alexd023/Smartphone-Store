@@ -109,6 +109,11 @@
                                             </form>
                                         </p>
                                         </p>
+                                        <form asp-controller="Compare" asp-action="Add" method="post">
+                                            <input type="hidden" name="productId" value="@product.ProductID" />
+                                            <button class="btn btn-sm btn-outline-primary">Compare</button>
+                                        </form>
+
                                     </div>
                                 </div>
                             </a>

@@ -24,15 +24,7 @@ namespace Smartphone_Store.Services
         {
             if (!modelState.IsValid)
             {
-                foreach (var modelStateKey in modelState.Keys)
-                {
-                    var value = modelState[modelStateKey];
-                    foreach (var error in value.Errors)
-                    {
-                        Console.WriteLine($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
-                    }
-                }
-
+                LogModelState(modelState);
                 return false;
             }
 
@@ -175,5 +167,72 @@ namespace Smartphone_Store.Services
         {
             await _productRepository.DeleteProductAsync(id);
         }
-    }
+    
+        private void LogModelState(ModelStateDictionary modelState)
+        {
+            foreach (var key in modelState.Keys)
+            {
+                var entry = modelState[key];
+                foreach (var error in entry.Errors)
+                {
+                    Console.WriteLine($"Key: {key}, Error: {error.ErrorMessage}");
+                }
+            }
+        }
+
+        private async Task<(bool Success, List<Image> Images)> SaveImagesAsync(IFormFile[] images, Product product)
+        {
+            var result = new List<Image>();
+            if (images == null || images.Length == 0)
+                return (true, result);
+
+            var uploadsFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+            try
+            {
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                foreach (var image in images)
+                {
+                    if (image == null || image.Length <= 0) continue;
+                    var fileName = image.FileName;
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+                    await using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        await image.CopyToAsync(fileStream);
+                    }
+
+                    result.Add(new Image
+                    {
+                        FilePath = $"Images/{fileName}",
+                        Product = product
+                    });
+                }
+                return (true, result);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex);
+                return (false, result);
+            }
+        }
+
+        private void SafeDeleteFile(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+}
 }
